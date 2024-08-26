@@ -5,15 +5,48 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:padding="20dp"
+    tools:context=".logica.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Spinner
+        android:id="@+id/spinnerCategoria"
+        android:layout_width="257dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="320dp"
+        android:entries="@array/categorias"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonRecomendaciones"
+        android:layout_width="257dp"
+        android:layout_height="wrap_content"
+        android:text="Recomendaciones"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonFavoritos"
+        app:layout_constraintVertical_bias="0.039" />
+
+    <Button
+        android:id="@+id/buttonExplorar"
+        android:layout_width="257dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Explorar destinos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoria" />
+
+    <Button
+        android:id="@+id/buttonFavoritos"
+        android:layout_width="257dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Favoritos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonExplorar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
