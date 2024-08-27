@@ -46,12 +46,12 @@ class listDestinos : AppCompatActivity() {
 
         listDestinos.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = destinosFiltrados[position]
+            Log.d("listDestinos", "Elemento seleccionado: $selectedItem")
 
             // Crear un Intent para iniciar la nueva actividad
             val intent = Intent(this, conFiltro::class.java)
-
-            // Pasar el nombre del destino como extra
             intent.putExtra("destinoNombre", selectedItem)
+            Log.d("listDestinos", "Iniciando actividad con destinoNombre: $selectedItem")
 
             // Iniciar la nueva actividad
             startActivity(intent)

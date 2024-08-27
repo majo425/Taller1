@@ -36,28 +36,30 @@ class conFiltro : AppCompatActivity() {
         // Obtener el nombre del destino desde el Intent
         val destinoNombre = intent.getStringExtra("destinoNombre")
 
-        // Leer el archivo JSON desde assets
+
         val jsonString = loadJSONFromAsset()
         if (jsonString != null) {
-            val destinosArray = JSONArray(jsonString)
+            val jsonObject = JSONObject(jsonString)
+
+            val destinosArray = jsonObject.getJSONArray("destinos")
 
             // Buscar el destino por nombre
             for (i in 0 until destinosArray.length()) {
                 val destino = destinosArray.getJSONObject(i)
-                val nombre = destino.getString("Nombre")
+                val nombre = destino.getString("nombre")  // Asegúrate que las claves coincidan con las del JSON
 
                 if (nombre == destinoNombre) {
                     currentDestino = destino
 
-                    // Mostrar los detalles del destino en la UI
-                    val textViewDestino = findViewById<TextView>(R.id.textViewDestino)
-                    textViewDestino.text = "Nombre: ${destino.getString("Nombre")}\n" +
-                            "Categoría: ${destino.getString("Categoría")}\n" +
-                            "Descripción: ${destino.getString("Descripción")}\n" +
-                            "Ubicación: ${destino.getString("Ubicación")}"
 
-                    // Realizar la solicitud de datos meteorológicos para el destino
-                    val ciudad = destino.getString("Ubicación") // Suponiendo que esta es la ciudad
+                    val textViewDestino = findViewById<TextView>(R.id.textViewDestino)
+                    textViewDestino.text = "Nombre: ${destino.getString("nombre")}\n" +
+                            "Categoría: ${destino.getString("categoria")}\n" +
+                            "Descripción: ${destino.getString("plan")}\n" +
+                            "Ubicación: ${destino.getString("pais")}"
+
+
+                    val ciudad = destino.getString("pais") // Suponiendo que esta es la ciudad
                     getWeatherInfo(ciudad)
 
                     break
@@ -71,6 +73,7 @@ class conFiltro : AppCompatActivity() {
             currentDestino?.let {
                 FavoriteDestinations.favoritesList.add(it)
                 Toast.makeText(this, "Agregado a Favoritos", Toast.LENGTH_SHORT).show()
+                Log.d("Favoritos por el momento:", FavoriteDestinations.favoritesList.toString())
             }
         }
     }
@@ -82,7 +85,7 @@ class conFiltro : AppCompatActivity() {
                     if (statusCode == 200) {
                         showWeatherInfo(weatherResponse)
                     } else {
-                        Log.d("Weather", "Service error")
+                        Log.d("Weather", "Service error - Status Code: $statusCode")
                     }
                 } else {
                     Log.d("Weather", "Network error")
@@ -90,6 +93,7 @@ class conFiltro : AppCompatActivity() {
             }
         }
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun showWeatherInfo(weatherResponse: WeatherResponse?) {
