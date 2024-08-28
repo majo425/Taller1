@@ -20,6 +20,12 @@
             android:name=".listDestinos"
             android:exported="false" />
         <activity
+            android:name=".favoritos"
+            android:exported="false" />
+        <activity
+            android:name=".recomendaciones"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

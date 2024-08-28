@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         var destinos: Array<String?> = arrayOf()
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -66,6 +65,53 @@ class MainActivity : AppCompatActivity() {
 
             //Enviar la peticion
             startActivity(peticion)
+        }
+
+        val btnFavoritos = findViewById<Button>(R.id.buttonFavoritos)
+        btnFavoritos.setOnClickListener {
+            val intent = Intent(this, favoritos::class.java)
+            startActivity(intent)
+        }
+
+        val btnRecomendaciones = findViewById<Button>(R.id.buttonRecomendaciones)
+        // Configurar el botón "Recomendaciones"
+        btnRecomendaciones.setOnClickListener {
+            val favoritos = FavoriteDestinations.favoritesList
+
+            if (favoritos.isNotEmpty()) {
+                // Obtener la categoría más frecuente
+                val categoryCount = favoritos.groupingBy { it.getString("categoria") }.eachCount()
+                val mostFrequentCategory = categoryCount.maxByOrNull { it.value }?.key
+
+                // Filtrar destinos por la categoría más frecuente
+                val filteredDestinations = favoritos.filter { it.getString("categoria") == mostFrequentCategory }
+                if (filteredDestinations.isNotEmpty()) {
+                    // Elegir un destino aleatorio
+                    val randomDestination = filteredDestinations.random()
+
+                    // Iniciar la actividad de recomendaciones
+                    val intent = Intent(this, recomendaciones::class.java)
+                    intent.putExtra("recommendedDestination", randomDestination.getString("nombre"))
+                    intent.putExtra("recommendedActivity", randomDestination.getString("plan"))
+                    intent.putExtra("recommendedCountry", randomDestination.getString("pais"))
+                    intent.putExtra("recommendedCategory", randomDestination.getString("categoria"))
+                    intent.putExtra("recommendedPrice", randomDestination.getString("precio"))
+
+                    startActivity(intent)
+                } else {
+                    // No hay destinos en la categoría más frecuente
+                    val intent = Intent(this, recomendaciones::class.java)
+                    intent.putExtra("recommendedDestination", "NA")
+                    intent.putExtra("recommendedActivity", "NA")
+                    startActivity(intent)
+                }
+            } else {
+                // No hay favoritos
+                val intent = Intent(this, recomendaciones::class.java)
+                intent.putExtra("recommendedDestination", "NA")
+                intent.putExtra("recommendedActivity", "NA")
+                startActivity(intent)
+            }
         }
     }
 
