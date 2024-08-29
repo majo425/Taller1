@@ -16,7 +16,7 @@ class WeatherService(private val apiKey: String) {
         fun requestWeatherData(cityName: String, callback: (Boolean, Int, WeatherResponse?) -> Unit) {
             // Codificar el nombre de la ciudad para evitar problemas con caracteres especiales
             val cityNameEncoded = URLEncoder.encode(cityName, "UTF-8")
-            val url = "https://api.weatherapi.com/v1/current.json?key=$apiKey&q=$cityNameEncoded"
+            val url = "https://api.weatherapi.com/v1/current.json?key=$apiKey&q=$cityNameEncoded&lan=es"
 
             // Construir la solicitud
             val request = Request.Builder().url(url).build()

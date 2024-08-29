@@ -30,52 +30,48 @@ class conFiltro : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_con_filtro)
 
-        // Inicializar el servicio de clima con tu API Key
+        // Inicializar el servicio de clima
         service = WeatherService("3ea3e5d9c3d14504b9d164305242708")
-
         // Obtener el nombre del destino desde el Intent
         val destinoNombre = intent.getStringExtra("destinoNombre")
 
+        destinoNombre?.let{
+            cargarDatosDestino(it)
+        }
+        configurarButtonFavoritos()
+    }
 
+    fun cargarDatosDestino(destinoNombre: String){
         val jsonString = loadJSONFromAsset()
         if (jsonString != null) {
             val jsonObject = JSONObject(jsonString)
-
             val destinosArray = jsonObject.getJSONArray("destinos")
 
             // Buscar el destino por nombre
             for (i in 0 until destinosArray.length()) {
                 val destino = destinosArray.getJSONObject(i)
-                val nombre = destino.getString("nombre")  // Asegúrate que las claves coincidan con las del JSON
+                val nombre = destino.getString("nombre")
 
                 if (nombre == destinoNombre) {
                     currentDestino = destino
-
-
-                    val textViewDestino = findViewById<TextView>(R.id.textViewDestino)
-                    textViewDestino.text = "Nombre: ${destino.getString("nombre")}\n" +
-                            "Categoría: ${destino.getString("categoria")}\n" +
-                            "Descripción: ${destino.getString("plan")}\n" +
-                            "Ubicación: ${destino.getString("pais")}"
-
-
-                    val ciudad = destino.getString("pais") // Suponiendo que esta es la ciudad
+                    confijurarTextViewDestino(destino)
+                    val ciudad = destino.getString("pais")
                     getWeatherInfo(ciudad)
-
                     break
                 }
             }
         }
+    }
 
-        // Configurar el botón para agregar a favoritos
-        val buttonAddToFavorites = findViewById<Button>(R.id.buttonAddToFavorites)
-        buttonAddToFavorites.setOnClickListener {
-            currentDestino?.let {
-                FavoriteDestinations.favoritesList.add(it)
-                Toast.makeText(this, "Agregado a Favoritos", Toast.LENGTH_SHORT).show()
-                Log.d("Favoritos por el momento:", FavoriteDestinations.favoritesList.toString())
-            }
-        }
+    fun confijurarTextViewDestino(destino: JSONObject){
+        val textViewDestino = findViewById<TextView>(R.id.textViewDestino)
+        val textViewInformacion = findViewById<TextView>(R.id.textViewInformacion)
+
+        textViewDestino.text = destino.getString("nombre")
+        textViewInformacion.text = "${destino.getString("categoria")}\n" +
+                "${destino.getString("plan")}\n" +
+                "${destino.getString("pais")}\n" +
+                "USD ${destino.getString("precio")}"
     }
 
     private fun getWeatherInfo(cityName: String) {
@@ -106,7 +102,16 @@ class conFiltro : AppCompatActivity() {
         }
     }
 
-    // Función para cargar el archivo JSON desde assets
+    fun configurarButtonFavoritos(){
+        findViewById<Button>(R.id.buttonAddToFavorites).setOnClickListener {
+            currentDestino?.let {
+                FavoriteDestinations.favoritesList.add(it)
+                Toast.makeText(this, "Agregado a Favoritos", Toast.LENGTH_SHORT).show()
+                Log.d("Favoritos por el momento:", FavoriteDestinations.favoritesList.toString())
+            }
+        }
+    }
+
     fun loadJSONFromAsset(): String? {
         var json: String? = null
         try {

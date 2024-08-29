@@ -16,16 +16,15 @@ class listDestinos : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_destinos)
+        // Recibir categoria seleccionada
+        val categoriaRecibida = intent.getStringExtra("categoria") ?: ""
+        // Arreglo con las coincidencias de la categoria seleccionada
+        val destinosFiltrados = filtrarDestinos(categoriaRecibida)
+        configurarListView(destinosFiltrados)
+    }
 
-        //Recibir categoria seleccionada
-        var categoriaRecibida = intent.getStringExtra("categoria")
-
-        //Definicion de la lista de interfaz
-        val listDestinos = findViewById<ListView>(R.id.listViewDestinos)
-
-        //Arreglo con las coincidencias de la categoria seleccionada
+    fun filtrarDestinos(categoriaRecibida: String): MutableList<String> {
         val destinosFiltrados = mutableListOf<String>()
-
         //Buscar los destinos que coincidan con la categoria
         for (destino in MainActivity.destinos) {
             if (destino != null) {
@@ -38,12 +37,16 @@ class listDestinos : AppCompatActivity() {
                 }
             }
         }
+        return destinosFiltrados
+    }
 
+    fun configurarListView(destinosFiltrados: List<String>){
+        //Definicion de la lista de interfaz
+        val listDestinos = findViewById<ListView>(R.id.listViewDestinos)
         val adapter = ArrayAdapter(baseContext,
             android.R.layout.simple_list_item_1,
             destinosFiltrados)
         listDestinos.adapter = adapter
-
         listDestinos.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = destinosFiltrados[position]
             Log.d("listDestinos", "Elemento seleccionado: $selectedItem")
@@ -52,8 +55,6 @@ class listDestinos : AppCompatActivity() {
             val intent = Intent(this, conFiltro::class.java)
             intent.putExtra("destinoNombre", selectedItem)
             Log.d("listDestinos", "Iniciando actividad con destinoNombre: $selectedItem")
-
-            // Iniciar la nueva actividad
             startActivity(intent)
         }
     }

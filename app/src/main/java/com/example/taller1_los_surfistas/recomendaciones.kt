@@ -25,15 +25,27 @@ class recomendaciones : AppCompatActivity() {
         val recommendedActivity = intent.getStringExtra("recommendedActivity")
         val recommendedPrice = intent.getStringExtra("recommendedPrice")
 
+        configurarTextView(
+            recommendedDestination,
+            recommendedCountry,
+            recommendedCategory,
+            recommendedActivity,
+            recommendedPrice
+        )
+    }
+
+    fun configurarTextView(destination: String?,country: String?,category: String?,activity: String?,price: String?) {
+        val textViewNombreDestino = findViewById<TextView>(R.id.textViewNombreDestino)
         val textViewRecommendation = findViewById<TextView>(R.id.textViewRecommendation)
-        textViewRecommendation.text = if (recommendedDestination != null && recommendedActivity != null) {
-            "Nombre: $recommendedDestination\n" +
-                    "Pais: $recommendedCountry\n"
-                    "Categoría: $recommendedCategory\n" +
-                    "Plan: $recommendedActivity\n" +
-                    "Precio: $recommendedPrice"
+        if (destination != null && activity != null) {
+            textViewNombreDestino.text = "$destination"
+            textViewRecommendation.text = "$country\n" +
+                    "$category\n" +
+                    "$activity\n" +
+                    "USD $price"
         } else {
-            "NA"
+            textViewNombreDestino.text = "NA"
+            textViewNombreDestino.text = ""
         }
     }
 }
