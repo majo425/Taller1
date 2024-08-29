@@ -44,8 +44,6 @@ class recomendaciones : AppCompatActivity() {
                     "$activity\n" +
                     "USD $price"
         } else {
-            textViewNombreDestino.text = "NA"
-            textViewNombreDestino.text = ""
         }
     }
 }
