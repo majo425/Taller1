@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class recomendaciones : AppCompatActivity() {
-    @SuppressLint("SuspiciousIndentation")
+   // @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recomendaciones)
@@ -34,16 +34,19 @@ class recomendaciones : AppCompatActivity() {
         )
     }
 
-    fun configurarTextView(destination: String?,country: String?,category: String?,activity: String?,price: String?) {
+    fun configurarTextView(destination: String?, country: String?, category: String?, activity: String?, price: String?) {
         val textViewNombreDestino = findViewById<TextView>(R.id.textViewNombreDestino)
         val textViewRecommendation = findViewById<TextView>(R.id.textViewRecommendation)
-        if (destination != null && activity != null) {
+        //if (destination != null && activity != null) {
+        if (destination != "NA" && activity != "NA") {
             textViewNombreDestino.text = "$destination"
             textViewRecommendation.text = "$country\n" +
                     "$category\n" +
                     "$activity\n" +
                     "USD $price"
         } else {
+            textViewNombreDestino.text = "N/A"
+            textViewRecommendation.text = " "
         }
     }
 }

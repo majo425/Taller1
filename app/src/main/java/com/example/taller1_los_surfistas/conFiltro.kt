@@ -3,6 +3,7 @@ package com.example.taller1_los_surfistas
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -34,11 +35,17 @@ class conFiltro : AppCompatActivity() {
         service = WeatherService("3ea3e5d9c3d14504b9d164305242708")
         // Obtener el nombre del destino desde el Intent
         val destinoNombre = intent.getStringExtra("destinoNombre")
+        val ocultarBotonFavoritos = intent.getBooleanExtra("ocultarBotonFavoritos", false)
 
         destinoNombre?.let{
             cargarDatosDestino(it)
         }
-        configurarButtonFavoritos()
+        // Configurar el botón de favoritos dependiendo del valor de ocultarBotonFavoritos
+        if (ocultarBotonFavoritos) {
+            findViewById<Button>(R.id.buttonAddToFavorites).visibility = View.GONE
+        } else {
+            configurarButtonFavoritos()
+        }
     }
 
     fun cargarDatosDestino(destinoNombre: String){
@@ -54,7 +61,7 @@ class conFiltro : AppCompatActivity() {
 
                 if (nombre == destinoNombre) {
                     currentDestino = destino
-                    confijurarTextViewDestino(destino)
+                    configurarTextViewDestino(destino)
                     val ciudad = destino.getString("pais")
                     getWeatherInfo(ciudad)
                     break
@@ -63,7 +70,7 @@ class conFiltro : AppCompatActivity() {
         }
     }
 
-    fun confijurarTextViewDestino(destino: JSONObject){
+    fun configurarTextViewDestino(destino: JSONObject){
         val textViewDestino = findViewById<TextView>(R.id.textViewDestino)
         val textViewInformacion = findViewById<TextView>(R.id.textViewInformacion)
 
