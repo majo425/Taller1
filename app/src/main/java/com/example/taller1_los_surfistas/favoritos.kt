@@ -22,14 +22,18 @@ class favoritos : AppCompatActivity() {
         // Obtener los destinos favoritos
         val favoritos = FavoriteDestinations.favoritesList
         val nombresFavoritos = favoritos.map { it.getString("nombre") }
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, nombresFavoritos)
         listViewFavoritos.adapter = adapter
+
         // Manejar clics en la lista de favoritos
         listViewFavoritos.setOnItemClickListener { parent, view, position, id ->
             val destinoSeleccionado = favoritos[position]
             val intent = Intent(this, conFiltro::class.java)
             intent.putExtra("destinoNombre", destinoSeleccionado.getString("nombre"))
             intent.putExtra("ocultarBotonFavoritos", true)
+            startActivity(intent)
         }
+
     }
 }
