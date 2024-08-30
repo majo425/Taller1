@@ -6,4 +6,4 @@ Integrantes:
 #### Jocelyne González Hernández
 #### Neyl Peñuela Bernate
 
-### Video demostrativo de la aplicación: https://youtu.be/f40Wmn8EtIQ
+### Video demostrativo de la aplicación: https://www.youtube.com/watch?v=KyhSmCEzz4Y
